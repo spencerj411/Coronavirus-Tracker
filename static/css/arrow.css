@@ -1,0 +1,47 @@
+#scroll-up {
+  display: none;
+  position: fixed;
+  z-index: 99;
+  bottom: 20px;
+  right: 30px;
+}
+
+/* From: https://codepen.io/bisaillonyannick/pen/pvZeGg */
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.arrow {
+  text-align: center;
+  z-index: 99;
+}
+
+.arrow:hover {
+    cursor:pointer;
+}
+
+.bounce {
+  -moz-animation: bounce 3s infinite;
+  -webkit-animation: bounce 3s infinite;
+  animation: bounce 3s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (min-width: 1024px) {
+  #scroll-up {
+    bottom: 30px !important;
+    right: 30% !important;
+  }
+}

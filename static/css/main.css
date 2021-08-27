@@ -1,0 +1,89 @@
+:root {
+    --pulse-rate: 3s;
+    --body-height: 100vh;
+    --counter-height: 30vh;
+    --scroll-to-height: 0vh;
+}
+
+html, body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.full-height {
+  height: var(--body-height);
+}
+
+/* .ticker {
+  height: calc(100vh - var(--body-height));
+} */
+
+.sidebar-counter {
+  height: var(--counter-height);
+}
+
+.list-group{
+  height: calc(100vh - var(--counter-height));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#map {
+  /* configure the size of the map */
+  height: calc(var(--body-height) - var(--scroll-to-height));
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Animated circleMarker from: https://codepen.io/jmfolds/pen/MJzoPO */
+.pulse {
+    animation: pulsate var(--pulse-rate) ease-out;
+    -webkit-animation: pulsate var(--pulse-rate) ease-out;
+    -webkit-animation-iteration-count: infinite; 
+    opacity: 0.0;
+}
+
+@keyframes pulsate {
+    0% {transform: opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {transform: opacity: 0.0;}
+}
+
+@media (max-width: 1152px) {
+  .counter {
+    font-size: 2rem;
+  }
+
+  .card-country {
+    font-size: 1rem;
+  }
+  
+  .card-label {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .position-fixed {
+    position: initial !important;
+  }
+
+  .card-country {
+    font-size: 1.25rem;
+  }
+  
+  .card-label {
+    font-size: 1rem;
+  }
+}
+
+@media (max-height: 414px) {
+  .card {
+    height: fit-content !important;
+  }
+}
+
+/* CHANGES BACKGROUND OF POPUP */
+/* .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: #CEBEBE;
+} */

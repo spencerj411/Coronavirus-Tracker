@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+        <script src="https://use.fontawesome.com/c5e255e1d9.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+        <link rel="stylesheet" type="text/css" href="{% static 'slick/slick.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'slick/slick-theme.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css"/>
+        <link rel="stylesheet" href="{% static 'css/arrow.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+        <title>Coronavirus Tracker</title>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <!-- Ticker -->
+            <!-- <div class="row ticker carousel">
+                {%for country, num_cases in confirmed_by_country.items %}
+                    <div class="">{{country}}: {{num_cases}} cases</div>
+                {% endfor %}
+            </div> -->
+            <div class="row">
+                <!-- Creates the map using leaflet.js and mapbox -->
+                <div class="col-lg-9 col-sm-12 p-0">
+                    <div id="map"></div>
+                    <div class="arrow bounce mt-n5">
+                        <a class="fa fa-arrow-circle-down fa-2x" id="scroll-down"></a>
+                    </div>
+                    
+                    <div id="t1">{% include "twitter-feed.html" %}</div>
+                </div>
+                <div class="arrow mt-n5 offset-sm-11">
+                    <a class="fa fa-arrow-circle-up fa-3x" id="scroll-up"></a>
+                </div>
+                <!-- data variable to be used in map.js -->
+                <!-- From: https://stackoverflow.com/questions/43305020/how-to-use-the-context-variables-passed-from-django-in-javascript -->
+                <script>
+                    // grabbing data from views to be used in map.js
+                    var by_province = "{{ by_province|escapejs }}";
+                    var SECRET_KEY = "{{SECRET_KEY}}";
+                </script>
+                <script defer src="{% static 'js/map.js' %}"></script> 
+                <!-- sidebar -->
+                <div id="sidebar" class="col-lg-3 offset-lg-9 col-sm-12 shadow-lg rounded px-0 py-0 position-fixed full-height">
+                    <!-- counters -->
+                    <div class="card bg-light border-0 shadow-sm p-2 mb-1 sidebar-counter">
+                        <div class="card-body mx-4">
+                            <div class="card-text col-md-12">
+                                <h1 class="text-center font-weight-bold text-warning counter">{{total_confirmed}}</h1>    
+                                <h6 class="text-center"> Total Cases</h6>             
+                            </div>
+                            <div class="card-text col-md-12">
+                                <h1 class="text-center font-weight-bold text-danger counter">{{total_deaths}}</h1>
+                                <h6 class="text-center"> Total Deaths</h6>             
+                            </div>
+                        </div>
+                    </div>
+                    <!-- list of countries -->
+                    <ul class="list-group list-group-flush">
+                        {% for country, fields in by_country.items %}
+                            <li class="list-group-item border-0">
+                                <!-- card -->
+                                <div class="card bg-light border-0 mb-3">
+                                    <div class="card-body shadow">
+                                        <div class="card-text">
+                                            <div class="text-center">
+                                                {% ifnotequal fields.country_code "00" %}
+                                                    <span class="flag-icon flag-icon-{{fields.country_code}}"></span>
+                                                {% endifnotequal %}
+                                                <span class="card-country font-weight-bold lead">{{country}}</span>
+                                            </div>
+                                            <p class="font-weight-normal text-center" style="margin-bottom: 0px;">
+                                                <span class="font-weight-bold text-warning">{{fields.confirmed_num_cases}}</span>
+                                                <span class="card-label">  Cases</span>
+                                            </p>
+                                            <p class="font-weight-normal text-center" style="margin-bottom: 0px;">
+                                                <span class="font-weight-bold text-danger">{{fields.deaths_num_cases}}</span>
+                                                <span class="card-label">  Deaths</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div id="t2">{% include "twitter-feed.html" %}</div>
+                </div>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/scrollto.js' %}"></script>
+        <script type="text/javascript" src="{% static 'slick/slick.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/slick.js' %}"></script>
+        <script type="text/javascript">
+            // ensures webpage doesnt scroll down when loaded
+            // From: https://stackoverflow.com/questions/3664381/force-page-scroll-position-to-top-at-page-refresh-in-html
+            $(window).on('beforeunload', function(){
+                $(window).scrollTop(0);
+            });
+
+            // used in scrollto.js
+            var scrollDownTo = "#sidebar";
+
+            // ensures the right order of elements/components
+            function twitterFeed(x) {
+                if (x.matches) { // If the webage is one column
+                    document.getElementById("t1").style.display = "none";
+                    document.getElementById("t2").style.display = "block";
+                    scrollDownTo = "#sidebar";
+                } else {
+                    document.getElementById("t1").style.display = "block";
+                    document.getElementById("t2").style.display = "none";
+                    scrollDownTo = "#twitter-feed";
+                }
+            }
+
+            var mediaQuery = window.matchMedia("(max-width: 991px)")
+            twitterFeed(mediaQuery) // Call listener function at run time
+            mediaQuery.addListener(twitterFeed) // Attach listener function on state changes
+        </script>
+    </body>
+</html>
