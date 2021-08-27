@@ -1,13 +1,13 @@
-const minZoom = 2;
+const minZoom = 3;
 
 // initialize Leaflet
-var map = L.map('map').setView({lon: 0, lat: 10}, minZoom);
+var map = L.map('map').setView({lon: 0, lat: 40}, minZoom);
 
 // grab map tiles from mapbox and add to map
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + SECRET_KEY, {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     minZoom: minZoom,
-    maxZoom: 15,
+    maxZoom: 15, 
     id: 'mapbox/light-v10', // 'spencerj411/ck778nrf5159n1it2rzendcfn'
     tileSize: 512,
     zoomOffset: -1,
@@ -19,7 +19,7 @@ L.control.scale().addTo(map);
 
 // values for cirlceMarker setting
 const circleColour = '#f03';
-const defaultBorderWeight = 3;
+const defaultBorderWeight = 2;
 
 const pulseOffset = 3.5; // how far the pulsing circle is from the main circle
 
