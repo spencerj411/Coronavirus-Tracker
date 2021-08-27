@@ -21,7 +21,7 @@ def homepage(request):
             # only keep track of cases with more than one confirmed case
             # some provinces lose cases as those cases turn into recovered cases
             if location == 'Philippines':
-                print('yep')
+                print('Philippines')
                 print(fields['num_cases'])
             if fields['num_cases'] > 0:
                 cases_by_province[location] = fields
